@@ -11,7 +11,7 @@ on:
 
 env:
   user: Catarina
-  message: awesome job printing messages!
+  message: awesome job printing env variables in messages!
 
 jobs:
   install-dependencies:
@@ -35,7 +35,11 @@ jobs:
         with:
           node-version: '18'
       - name: Install dependencies
+        id: install_dependencies
         run: npm install
+        - name: Pass or fail
+        run: |
+          if [[ ${{ steps.install_dependencies.conclusion }} == success ]]; then exit 0; else exit 1; fi
       - name: Build
         run: npm run build
   # tests:

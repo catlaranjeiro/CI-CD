@@ -39,6 +39,7 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
+        if: success()
   test-if-failure:
     name: Tests if failure on install dependencies
     if: failure()

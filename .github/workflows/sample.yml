@@ -47,7 +47,7 @@ jobs:
           node-version: '18'
       - name: Run tests
         run: npm run test
-        if: 'npm run test'
+        # if: 'npm run test'
 
 
 

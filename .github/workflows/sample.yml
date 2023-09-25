@@ -27,6 +27,7 @@ jobs:
         run: npm install
   build:
     name: Build
+    if: success()
     needs: install-dependencies
     runs-on: ubuntu-latest
     steps:
@@ -35,11 +36,7 @@ jobs:
         with:
           node-version: '18'
       - name: Install dependencies
-        id: install_dependencies
         run: npm install
-      # - name: Pass or fail
-      #   run: |
-      #     if [[ ${{ steps.install_dependencies.conclusion }} == success ]]; then exit 0; else exit 1; fi
       - name: Build
         run: npm run build
   # tests:

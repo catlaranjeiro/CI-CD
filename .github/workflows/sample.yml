@@ -37,6 +37,9 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: npm install
+      - name: Install dependencies failure
+        run: echo 'Install dependencies step failed'
+        if: failure()
       - name: Build
         run: npm run build
         if: success()

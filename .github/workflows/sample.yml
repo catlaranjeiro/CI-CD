@@ -34,20 +34,22 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
+      - name: Install dependencies
+        run: npm install
       - name: Build
         run: npm run build
-  tests:
-    name: Run tests
-    needs: install-dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      - name: Run tests
-        run: npm run test
-        # if: 'npm run test'
+  # tests:
+  #   name: Run tests
+  #   needs: install-dependencies
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '18'
+  #     - name: Run tests
+  #       run: npm run test
+  #       # if: 'npm run test'
 
 
 

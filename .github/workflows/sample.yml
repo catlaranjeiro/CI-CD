@@ -9,7 +9,48 @@ on:
     branches:
       - master
 
+env:
+  user: Catarina
+  message: awesome job printing messages!
+
 jobs:
+  install-dependencies:
+    name: Install dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '${{ env.user }} this is an '${{ env.message }}'
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+  build:
+    name: Build
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Build
+        run: npm run build
+  tests:
+    name: Run tests
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Run tests
+        run: npm run test
+        if: 'npm run test'
+
+
+
   # push-job:
   #   name: Push job
   #   runs-on: ubuntu-latest
@@ -22,18 +63,19 @@ jobs:
   #       run: npm install
   #     - name: Build
   #       run: npm run build
-  pull-request-job:
-    name: Pull request job
-    # needs: push-job
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-      - name: Run tests
-        run: npm run test
+  # pull-request-job:
+  #   name: Pull request job
+  #   # needs: push-job
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '18'
+  #     - name: Install dependencies
+  #       run: npm install
+  #     - name: Build
+  #       run: npm run build
+  #     - name: Run tests
+  #       run: npm run test
+  #       if: 'npm run test'

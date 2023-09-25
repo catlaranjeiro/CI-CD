@@ -39,6 +39,20 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
+  test-if-failure:
+    name: Tests if failure on install dependencies
+    if: failure()
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Install dependencies job failed'
+  test-if-success:
+    name: Tests if success on install dependencies
+    if: success()
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Install dependencies job successful'
   # tests:
   #   name: Run tests
   #   needs: install-dependencies

@@ -18,7 +18,7 @@ jobs:
     name: Install dependencies
     runs-on: ubuntu-latest
     steps:
-      - run: echo '${{ env.user }} this is an '${{ env.message }}'
+      - run: echo '${{ env.user }} this is an ${{ env.message }}'
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:

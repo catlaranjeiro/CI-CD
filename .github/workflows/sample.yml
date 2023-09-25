@@ -57,6 +57,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo 'Install dependencies job successful'
+
+  # only run test job if 'npm run test' command exists on package.json
+  test-if-npm-run-test:
+    name: Tests if npm run test exists
+    if: success()
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Install dependencies job successful'
+      - run: echo 'Running npm run test'
+      - run: npm run test
+        if: 'npm run test'
+  
+
+
+
   # tests:
   #   name: Run tests
   #   needs: install-dependencies

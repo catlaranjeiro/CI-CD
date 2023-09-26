@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: installed-dependencies
-          path: installed-dependencies.txt
+          path: node_modules
           retention-days: 1
   build:
     name: Build

@@ -52,7 +52,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: installed-dependencies
-        path: .
+        # path: .
       - name: List of directories
         run: ls -la
       - name: Build

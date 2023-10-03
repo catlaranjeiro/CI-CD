@@ -52,6 +52,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: installed-dependencies
+        path: .
+      - name: List of directories
+        run: ls -la
       - name: Build
         run: npm run build
         if: success()

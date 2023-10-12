@@ -9,7 +9,88 @@ on:
     branches:
       - master
 
+env:
+  user: Catarina
+  message: awesome job printing env variables in messages!
+
 jobs:
+  install-dependencies:
+    name: Install dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '${{ env.user }} this is an ${{ env.message }}'
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+
+      # next we are using artifacts but this is costly and we don't usually use it for dependencies
+      # - name: Upload Artifacts 
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: installed-dependencies
+      #     path: node_modules
+      #     retention-days: 1
+  build:
+    name: Build
+    if: success()
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+      - name: Install dependencies failure
+        run: echo 'Install dependencies step failed'
+        if: failure()
+
+      ## using artifacts download from previous step for learning purposes
+      # - name: Download dependencies from Install dependencies job
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: installed-dependencies
+      #   # path: .
+      # - name: List of directories
+      #   run: ls -la
+      # - name: Build
+      #   run: npm run build
+      #   if: success()
+  test-if-failure:
+    name: Tests if failure on install dependencies
+    if: failure()
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Install dependencies job failed'
+  test-if-success:
+    name: Tests if success on install dependencies
+    if: success()
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Install dependencies job successful'
+
+
+  # tests:
+  #   name: Run tests
+  #   needs: install-dependencies
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '18'
+  #     - name: Run tests
+  #       run: npm run test
+  #       # if: 'npm run test'
+
+
+
   # push-job:
   #   name: Push job
   #   runs-on: ubuntu-latest
@@ -22,18 +103,19 @@ jobs:
   #       run: npm install
   #     - name: Build
   #       run: npm run build
-  pull-request-job:
-    name: Pull request job
-    # needs: push-job
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-      - name: Run tests
-        run: npm run test
+  # pull-request-job:
+  #   name: Pull request job
+  #   # needs: push-job
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '18'
+  #     - name: Install dependencies
+  #       run: npm install
+  #     - name: Build
+  #       run: npm run build
+  #     - name: Run tests
+  #       run: npm run test
+  #       if: 'npm run test'

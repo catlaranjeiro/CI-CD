@@ -25,13 +25,14 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: npm install
+
       # next we are using artifacts but this is costly and we don't usually use it for dependencies
-      - name: Upload Artifacts 
-        uses: actions/upload-artifact@v3
-        with:
-          name: installed-dependencies
-          path: node_modules
-          retention-days: 1
+      # - name: Upload Artifacts 
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: installed-dependencies
+      #     path: node_modules
+      #     retention-days: 1
   build:
     name: Build
     if: success()
@@ -42,22 +43,23 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      # - name: Install dependencies
-      #   run: npm install
-      # - name: Install dependencies failure
-      #   run: echo 'Install dependencies step failed'
-      #   if: failure()
+      - name: Install dependencies
+        run: npm install
+      - name: Install dependencies failure
+        run: echo 'Install dependencies step failed'
+        if: failure()
+
       ## using artifacts download from previous step for learning purposes
-      - name: Download dependencies from Install dependencies job
-        uses: actions/download-artifact@v3
-        with:
-          name: installed-dependencies
-        # path: .
-      - name: List of directories
-        run: ls -la
-      - name: Build
-        run: npm run build
-        if: success()
+      # - name: Download dependencies from Install dependencies job
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: installed-dependencies
+      #   # path: .
+      # - name: List of directories
+      #   run: ls -la
+      # - name: Build
+      #   run: npm run build
+      #   if: success()
   test-if-failure:
     name: Tests if failure on install dependencies
     if: failure()

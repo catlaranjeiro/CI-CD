@@ -1,0 +1,14 @@
+name: studiographene-ci
+
+on:
+  pull_request: {}
+  workflow_dispatch:
+
+jobs:
+  call-workflow:
+    uses: studiographene/nodejs-ci/.github/workflows/ci.yml@master
+    with:
+      project_name: ci-cd-learning
+      excluded_jobs: docker
+    secrets: inherit
+    permissions: write-all
